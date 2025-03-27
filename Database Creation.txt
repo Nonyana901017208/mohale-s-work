@@ -1,0 +1,399 @@
+Database Creation:
+
+CREATE TABLE Person (
+    PersonID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Address VARCHAR(255),
+    Phone VARCHAR(15),
+    BirthDate DATE
+);
+
+CREATE TABLE Organization (
+    OrganizationID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Address VARCHAR(255),
+    Phone VARCHAR(15),
+    BudgetNumber VARCHAR(50),
+    Type ENUM('Internal', 'External')
+);
+
+CREATE TABLE Employment (
+    EmploymentID INT PRIMARY KEY,
+    PersonID INT,
+    OrganizationID INT,
+    EmploymentDate DATE,
+    TerminationDate DATE,
+    Bonus DECIMAL(10, 2),
+    FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
+    FOREIGN KEY (OrganizationID) REFERENCES Organization(OrganizationID)
+);
+
+CREATE TABLE Position (
+    PositionID INT PRIMARY KEY,
+    Title VARCHAR(100),
+    OrganizationID INT,
+    StartDate DATE,
+    TerminationDate DATE,
+    Salary DECIMAL(10, 2),
+    FOREIGN KEY (OrganizationID) REFERENCES Organization(OrganizationID)
+);
+
+CREATE TABLE PermanentEmployment (
+    EmploymentID INT PRIMARY KEY,
+    Bonus DECIMAL(10, 2),
+    Credit DECIMAL(10, 2),
+    FOREIGN KEY (EmploymentID) REFERENCES Employment(EmploymentID)
+);
+
+CREATE TABLE PartTimeEmployment (
+    EmploymentID INT PRIMARY KEY,
+    ExtraHours INT,
+    FOREIGN KEY (EmploymentID) REFERENCES Employment(EmploymentID)
+);
+
+Data Insertion:
+
+ INSERT INTO Person (PersonID, Name, Address, PhoneNumber, BirthDate)
+    -> VALUES
+    -> (1, 'Nonyana Mohale', '123 Main St, Maseru', '266-1234', '1990-05-15'),
+    -> (2, 'Lefa Rapopo', '456 Elm St, Leribe', '266-5678', '1985-08-20'),
+    -> (3, 'Sandile Nhlapo', '789 Oak St, Mafeteng', '266-9101', '1995-03-10'),
+    -> (4, 'Phethile Nhlapo', '101 Pine St, Mohale’s Hoek', '266-1122', '1988-11-25'),
+    -> (5, 'Topollo Khali', '202 Maple St, Butha-Buthe', '266-3344', '1992-07-30'),
+    -> (6, 'Molefi Nkopane', '303 Cedar St, Quthing', '266-5566', '1987-09-12'),
+    -> (7, 'Mapali Mahao', '404 Birch St, Mokhotlong', '266-7788', '1993-02-18'),
+    -> (8, 'Pheko Kompi', '505 Walnut St, Thaba-Tseka', '266-9900', '1991-06-22'),
+    -> (9, 'Thabo Maama', '606 Spruce St, Maseru', '266-2233', '1989-04-05'),
+    -> (10, 'Mpho Seutloali', '707 Fir St, Leribe', '266-4455', '1994-12-08');
+
+ INSERT INTO Organization (OrganizationID, Name, Address, PhoneNumber, BudgetNumber, Type)
+    -> VALUES
+    -> (1, 'Org A', '123 Main St, Maseru', '266-1234', 'BUDGET001', 'Internal'),
+    -> (2, 'Org B', '456 Elm St, Leribe', '266-5678', 'BUDGET002', 'External'),
+    -> (3, 'Org C', '789 Oak St, Mafeteng', '266-9101', 'BUDGET003', 'Internal'),
+    -> (4, 'Org D', '101 Pine St, Mohale’s Hoek', '266-1122', 'BUDGET004', 'External'),
+    -> (5, 'Org E', '202 Maple St, Butha-Buthe', '266-3344', 'BUDGET005', 'Internal'),
+    -> (6, 'Org F', '303 Cedar St, Quthing', '266-5566', 'BUDGET006', 'External'),
+    -> (7, 'Org G', '404 Birch St, Mokhotlong', '266-7788', 'BUDGET007', 'Internal'),
+    -> (8, 'Org H', '505 Walnut St, Thaba-Tseka', '266-9900', 'BUDGET008', 'External'),
+    -> (9, 'Org I', '606 Spruce St, Maseru', '266-2233', 'BUDGET009', 'Internal'),
+    -> (10, 'Org J', '707 Fir St, Leribe', '266-4455', 'BUDGET010', 'External');
+
+
+ INSERT INTO Position (PositionID, Title, OrganizationID)
+    -> VALUES
+    -> (1, 'Manager', 1),
+    -> (2, 'Analyst', 1),
+    -> (3, 'Developer', 2),
+    -> (4, 'Designer', 3),
+    -> (5, 'Accountant', 4),
+    -> (6, 'HR Specialist', 5),
+    -> (7, 'Sales Executive', 6),
+    -> (8, 'Marketing Manager', 7),
+    -> (9, 'IT Support', 8),
+    -> (10, 'Customer Service', 9);
+
+INSERT INTO PositionHistory (PositionHistoryID, PersonID, PositionID, StartDate, TerminationDate, Salary)
+    -> VALUES
+    -> (1, 1, 1, '2020-01-01', '2021-12-31', 50000),
+    -> (2, 2, 2, '2021-06-01', NULL, 75000),
+    -> (3, 3, 3, '2022-01-01', NULL, 60000),
+    -> (4, 4, 4, '2020-03-15', NULL, 55000),
+    -> (5, 5, 5, '2021-09-10', NULL, 45000),
+    -> (6, 6, 6, '2022-05-20', NULL, 70000),
+    -> (7, 7, 7, '2020-07-25', NULL, 65000),
+    -> (8, 8, 8, '2021-11-30', NULL, 48000),
+    -> (9, 9, 9, '2022-02-14', NULL, 52000),
+    -> (10, 10, 10, '2020-04-18', NULL, 40000);
+
+
+ INSERT INTO Employment (EmploymentID, PersonID, OrganizationID, EmploymentDate, TerminationDate, Bonus)
+    -> VALUES
+    -> (1, 1, 1, '2020-01-01', NULL, 5000),
+    -> (2, 2, 2, '2021-06-01', NULL, 3000),
+    -> (3, 3, 3, '2022-01-01', NULL, 4000),
+    -> (4, 4, 4, '2020-03-15', NULL, 4500),
+    -> (5, 5, 5, '2021-09-10', NULL, 3500),
+    -> (6, 6, 6, '2022-05-20', NULL, 6000),
+    -> (7, 7, 7, '2020-07-25', NULL, 5500),
+    -> (8, 8, 8, '2021-11-30', NULL, 3200),
+    -> (9, 9, 9, '2022-02-14', NULL, 4800),
+    -> (10, 10, 10, '2020-04-18', NULL, 3700);
+
+INSERT INTO PermanentEmployment (EmploymentID, ExtraBonus, Credit)
+    -> VALUES
+    -> (1, 1000, 500),
+    -> (3, 1500, 700),
+    -> (4, 1200, 600),
+    -> (6, 2000, 800),
+    -> (7, 1300, 650),
+    -> (9, 1400, 700);
+
+INSERT INTO PartTimeEmployment (EmploymentID, ExtraHours)
+    -> VALUES
+    -> (2, 20),
+    -> (5, 25),
+    -> (8, 30),
+    -> (10, 15);
+
+
+Views:
+
+CREATE VIEW PermanentEmployment AS
+SELECT p.Name, e.Bonus, pe.Credit
+FROM Person p
+JOIN Employment e ON p.PersonID = e.PersonID
+JOIN PermanentEmployee pe ON e.EmploymentID = pe.EmploymentID;
+
+CREATE VIEW PartTimeEmployment AS
+SELECT p.Name, e.Bonus, pte.ExtraHours
+FROM Person p
+JOIN Employment e ON p.PersonID = e.PersonID
+JOIN PartTimeEmployee pte ON e.EmploymentID = pte.EmploymentID;
+
+Triggers:
+
+--2 delete triggers//
+
+-- Trigger1 for deleting Employment records when a person is Deleted//
+DELIMITER //
+CREATE TRIGGER before_delete_person
+BEFORE DELETE ON Person
+FOR EACH ROW
+BEGIN
+    -- Delete dependent records in Employment first
+    DELETE FROM Employment WHERE PersonID = OLD.PersonID;
+END //
+DELIMITER ;
+
+--Trigger2 for deleting Log Organization//
+DELIMITER //
+CREATE TRIGGER after_delete_organization
+AFTER DELETE ON Organization
+FOR EACH ROW
+BEGIN
+    -- Log deletion to a hypothetical OrganizationLog table
+    INSERT INTO OrganizationLog (OrganizationID, Action, Timestamp)
+    VALUES (OLD.OrganizationID, 'DELETE', NOW());
+END //
+DELIMITER ;
+
+--2 Update Triggers://
+--Trigger1 for Restricting TerminationDate from Preceding EmploymentDate//
+
+DELIMITER //
+CREATE TRIGGER before_update_employment
+BEFORE UPDATE ON Employment
+FOR EACH ROW
+BEGIN
+    IF NEW.TerminationDate < NEW.EmploymentDate THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Termination date cannot be earlier than employment date.';
+    END IF;
+END //
+DELIMITER ;
+
+--Trigger2 for Recording Salary Updates for Positions//
+DELIMITER //
+CREATE TRIGGER after_update_position
+AFTER UPDATE ON Position
+FOR EACH ROW
+BEGIN
+    IF OLD.Salary != NEW.Salary THEN
+        INSERT INTO PositionLog (PositionID, OldSalary, NewSalary, Timestamp)
+        VALUES (OLD.PositionID, OLD.Salary, NEW.Salary, NOW());
+    END IF;
+END //
+DELIMITER ;
+
+Intert Triggers:
+
+--Trigger1 for validating PartTimr Employment Etra_Hours//
+
+DELIMITER //
+CREATE TRIGGER before_insert_parttime
+BEFORE INSERT ON PartTimeEmployee
+FOR EACH ROW
+BEGIN
+    IF NEW.ExtraHours < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Extra hours cannot be negative.';
+    END IF;
+END //
+DELIMITER ;
+
+--Trigger2 for Auto-Calculating Permanent Employee Bonus of 10% of Salary//
+
+DELIMITER //
+CREATE TRIGGER after_insert_permanent
+AFTER INSERT ON PermanentEmployee
+FOR EACH ROW
+BEGIN
+    -- Get the associated employment's salary from Position
+    DECLARE emp_salary DECIMAL(10,2);
+    SELECT p.Salary INTO emp_salary
+    FROM Employment e
+    JOIN Position p ON e.OrganizationID = p.OrganizationID
+    WHERE e.EmploymentID = NEW.EmploymentID
+    LIMIT 1;
+    
+    -- Update bonus (10% of salary)
+    IF emp_salary IS NOT NULL THEN
+        UPDATE PermanentEmployee
+        SET Bonus = emp_salary * 0.10
+        WHERE EmploymentID = NEW.EmploymentID;
+    END IF;
+END //
+DELIMITER ;
+
+Functions:
+
+--function1 for calculating total bonus for a person//
+
+DELIMITER //
+CREATE FUNCTION fn_CalculateTotalBonus(p_PersonID INT) 
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE total_bonus DECIMAL(10,2);
+    
+    SELECT SUM(Bonus) INTO total_bonus
+    FROM Employment
+    WHERE PersonID = p_PersonID;
+    
+    RETURN IFNULL(total_bonus, 0);
+END //
+DELIMITER ;
+
+--function2 for checking Employment Duration in years//
+
+DELIMITER //
+CREATE FUNCTION fn_EmploymentDurationYears(p_EmploymentID INT) 
+RETURNS DECIMAL(5,2)
+DETERMINISTIC
+BEGIN
+    DECLARE start_date DATE;
+    DECLARE end_date DATE;
+    DECLARE years_employed DECIMAL(5,2);
+    
+    SELECT EmploymentDate, TerminationDate 
+    INTO start_date, end_date
+    FROM Employment
+    WHERE EmploymentID = p_EmploymentID;
+    
+    IF end_date IS NULL THEN
+        SET end_date = CURDATE();
+    END IF;
+    
+    SET years_employed = DATEDIFF(end_date, start_date) / 365.25;
+    
+    RETURN ROUND(years_employed, 2);
+END //
+DELIMITER ;
+
+
+
+
+
+Procedures:
+
+--procedure1 for Promoting Employee//
+DELIMITER //
+CREATE PROCEDURE sp_PromoteEmployee(
+    IN p_EmploymentID INT,
+    IN p_NewPositionID INT,
+    IN p_SalaryIncrease DECIMAL(10,2))
+BEGIN
+    DECLARE org_id INT;
+    DECLARE current_salary DECIMAL(10,2) DEFAULT 0;
+    DECLARE new_salary DECIMAL(10,2);
+    
+    -- Check if Salary column exists, add if missing
+    IF NOT EXISTS (
+        SELECT * FROM information_schema.columns 
+        WHERE table_name = 'Position' AND column_name = 'Salary'
+    ) THEN
+        ALTER TABLE Position ADD COLUMN Salary DECIMAL(10,2);
+    END IF;
+    
+    -- Get current organization and salary
+    SELECT e.OrganizationID, IFNULL(pos.Salary, 0) 
+    INTO org_id, current_salary
+    FROM Employment e
+    JOIN Position pos ON e.OrganizationID = pos.OrganizationID
+    WHERE e.EmploymentID = p_EmploymentID
+    LIMIT 1;
+    
+    -- Calculate new salary
+    SET new_salary = current_salary + p_SalaryIncrease;
+    
+    -- Update position and salary
+    UPDATE Position 
+    SET Salary = new_salary
+    WHERE PositionID = p_NewPositionID AND OrganizationID = org_id;
+    
+    SELECT CONCAT('Employee promoted to position ID ', p_NewPositionID, 
+                 ' with new salary of ', new_salary) AS Result;
+END //
+DELIMITER ;
+--procedure2 for generating employment report//
+
+DELIMITER //
+CREATE PROCEDURE sp_GenerateEmploymentReport(IN p_OrganizationID INT)
+BEGIN
+    -- First ensure Salary column exists in Position table
+    IF NOT EXISTS (
+        SELECT * FROM information_schema.columns 
+        WHERE table_name = 'Position' AND column_name = 'Salary'
+    ) THEN
+        ALTER TABLE Position ADD COLUMN Salary DECIMAL(10,2);
+        
+        -- Set default salaries if newly added
+        UPDATE Position SET Salary = 
+            CASE 
+                WHEN Title = 'Manager' THEN 75000
+                WHEN Title = 'Analyst' THEN 60000
+                WHEN Title = 'Developer' THEN 65000
+                ELSE 50000
+            END;
+    END IF;
+    
+    -- Generate the report
+    SELECT 
+        p.Name AS EmployeeName,
+        pos.Title AS Position,
+        e.EmploymentDate,
+        IFNULL(e.TerminationDate, 'Current') AS TerminationDate,
+        pos.Salary,
+        e.Bonus,
+        DATEDIFF(IFNULL(e.TerminationDate, CURDATE()), e.EmploymentDate)/365.25 AS YearsEmployed
+    FROM Employment e
+    JOIN Person p ON e.PersonID = p.PersonID
+    JOIN Position pos ON e.OrganizationID = pos.OrganizationID
+    WHERE e.OrganizationID = p_OrganizationID
+    ORDER BY YearsEmployed DESC;
+END //
+DELIMITER ;
+
+Creating Users:
+
+-- Create first user (HR staff)
+CREATE USER 'hr_staff'@'localhost' IDENTIFIED BY 'SecureHrPass123!';
+
+-- Create second user (report viewer)
+CREATE USER 'report_viewer'@'localhost' IDENTIFIED BY 'ViewOnly456!';
+
+--Granding privilege for HR staff users//
+-- Grant SELECT and UPDATE on all tables
+GRANT SELECT, UPDATE ON tt_holdings.* TO 'hr_staff'@'localhost';
+
+-- Specifically grant EXECUTE on procedures
+GRANT EXECUTE ON PROCEDURE tt_holdings.sp_PromoteEmployee TO 'hr_staff'@'localhost';
+GRANT EXECUTE ON PROCEDURE tt_holdings.sp_GenerateEmploymentReport TO 'hr_staff'@'localhost';
+
+--Granding Privalages to report viewers//
+-- Grant SELECT only on all tables
+GRANT SELECT ON tt_holdings.* TO 'report_viewer'@'localhost';
+
+-- Grant EXECUTE on report procedure only
+GRANT EXECUTE ON PROCEDURE tt_holdings.sp_GenerateEmploymentReport TO 'report_viewer'@'localhost';
