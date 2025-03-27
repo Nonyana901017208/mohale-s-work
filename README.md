@@ -1,2 +1,2 @@
 # mohale-s-work
-database system  individual assignment
+database management system  individual assignment
